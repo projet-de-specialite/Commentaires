@@ -1,5 +1,13 @@
 package main
 
+/*    BDD
+Name : commentaires
+Type : Postgres
+Port : 5432:5432
+User : Comentaires
+mdp  : Comentaires
+*/
+
 import (
 	"bufio"
 	"fmt"
