@@ -11,19 +11,22 @@ mdp  : comentaires
 import (
 	"bufio"
 	"fmt"
-	base "main/config"
 	"os"
+
+	"main/config"
+	"main/models"
 )
 
 func main() {
-
+	config.DatabaseInit()
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Printf("Texte : ")
 	scanner.Scan()
-	Texte := scanner.Text()
+	/*Texte := scanner.Text()
+	models.NewCommentaire(&c, Texte)*/
 
-	base.DatabaseInit()
-	base.AjoutCommentaire(Texte)
+	c := *models.FindCommentaireById(2)
+	fmt.Println(models.ToString(c))
 
 }

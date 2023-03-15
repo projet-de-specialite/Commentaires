@@ -1,10 +1,16 @@
 package config
 
+/*    BDD
+Name : commentaires
+Type : Postgres
+Port : 5432:5432
+User : comentaires
+mdp  : comentaires
+*/
+
 import (
 	"database/sql"
 	"log"
-
-	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -31,11 +37,6 @@ func createTables() {
 	}
 }
 
-func AjoutCommentaire(Chaine string) {
-	requete := "INSERT INTO commentaires (Texte, Date_Commentaire, pouce_rouge, pouce_vert, id_post )VALUES('" + Chaine + "','" + time.Now().Format("2006-01-02 15:04:05") + " ', 0, 0, null)"
-	_, err := db.Exec(requete)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+func Get_Db() *sql.DB {
+	return db
 }
