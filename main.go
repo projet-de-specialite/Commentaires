@@ -9,24 +9,19 @@ mdp  : comentaires
 */
 
 import (
-	"bufio"
-	"fmt"
-	"os"
+	"log"
+	"net/http"
 
+	"main/api"
 	"main/config"
-	//"main/models"
 )
 
 func main() {
 	config.DatabaseInit()
-	scanner := bufio.NewScanner(os.Stdin)
 
-	fmt.Printf("Texte : ")
-	scanner.Scan()
-	/*Texte := scanner.Text()
-	models.NewCommentaire(&c, Texte)*/
+	err := http.ListenAndServe(":80", api.Handlers())
 
-	/*c := *models.FindCommentaireById(2)
-	fmt.Println(models.ToString(c))*/
-
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 }
