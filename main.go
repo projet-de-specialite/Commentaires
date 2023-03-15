@@ -14,7 +14,7 @@ import (
 	"os"
 
 	"main/config"
-	"main/models"
+	//"main/models"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	/*Texte := scanner.Text()
 	models.NewCommentaire(&c, Texte)*/
 
-	c := *models.FindCommentaireById(2)
-	fmt.Println(models.ToString(c))
+	/*c := *models.FindCommentaireById(2)
+	fmt.Println(models.ToString(c))*/
 
 }

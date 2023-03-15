@@ -26,11 +26,11 @@ func DatabaseInit() {
 		log.Fatal(err)
 	}
 
-	createTables()
+	createTablesCommentaires()
 }
 
-func createTables() {
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS commentaires(id_commentaire serial, Texte varchar(500), Date_Commentaire timestamp, pouce_rouge int, pouce_vert int, id_post int)")
+func createTablesCommentaires() {
+	_, err := db.Exec("CREATE TABLE IF NOT EXISTS commentaires(id_commentaire int NOT NULL UNIQUE PRIMARY KEY GENERATED ALWAYS AS IDENTITY, Texte varchar(500), Date_Commentaire timestamp, id_post int)")
 
 	if err != nil {
 		log.Fatal(err)
