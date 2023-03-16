@@ -17,7 +17,7 @@ type Commentaire struct {
 	Id_post          int       `json:"Id_Post"`
 }
 
-func NewCommentaire(c *Commentaire) {
+func NewComment(c *Commentaire) {
 	if c == nil {
 		log.Fatal(c)
 	}
@@ -33,7 +33,7 @@ func NewCommentaire(c *Commentaire) {
 	}
 }
 
-func FindCommentaireById(id int) *Commentaire {
+func FindCommentById(id int) *Commentaire {
 	var commentaire Commentaire
 
 	row := config.Get_Db().QueryRow("SELECT * FROM commentaires WHERE Id_Commentaire = $1;", id)

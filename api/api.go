@@ -9,9 +9,9 @@ import (
 func Handlers() *gin.Engine {
 	r := gin.Default()
 
-	v1Commentaires := r.Group("api/v1/commentaire")
+	v1Commentaires := r.Group("api/v1/comment")
 	{
-		v1Commentaires.POST("", PostCommentaire)
+		v1Commentaires.POST("", PostComment)
 		//v1Commentaires.GET("", GetUsers)
 		//v1Commentaires.GET(":id", GetUser)
 		//v1Commentaires.PUT(":id", EditUser)
@@ -21,12 +21,12 @@ func Handlers() *gin.Engine {
 	return r
 }
 
-func PostCommentaire(c *gin.Context) {
+func PostComment(c *gin.Context) {
 	var json models.Commentaire
 	c.Bind(&json)
 
 	if json.Texte != "" {
-		models.NewCommentaire(&json)
+		models.NewComment(&json)
 		c.JSON(201, gin.H{"succes": json})
 	} else {
 		c.JSON(422, gin.H{"error": "field are empty"})
