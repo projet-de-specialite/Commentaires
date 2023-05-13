@@ -1,7 +1,7 @@
 package api
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -65,9 +65,11 @@ func GetNombreAvis(c *gin.Context) {
 	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		c.JSON(421, gin.H{"error": "ID incorrect"})
+	} else {
+		avis := models.CountAvisByComment(ID)
+		c.IndentedJSON(http.StatusOK, avis)
 	}
 
-	avis := models.CountAvisByComment(ID)
-	c.IndentedJSON(http.StatusOK, avis)
 }

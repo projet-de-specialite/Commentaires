@@ -11,6 +11,7 @@ mdp  : comentaires
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -20,7 +21,9 @@ var db *sql.DB
 func DatabaseInit() {
 	var err error
 
-	db, err = sql.Open("postgres", "user=comment password=comment dbname=comment sslmode=disable")
+	//os.Setenv("Commentaires_Database", "user=comment password=comment dbname=comment sslmode=disable")
+
+	db, err = sql.Open("postgres", os.Getenv("Commentaires_Database"))
 
 	if err != nil {
 		log.Fatal(err)
