@@ -1,12 +1,14 @@
 package api
 
 import (
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
-	"main/config"
-	"main/models"
+	"github.com/projet-de-specialite/Commentaires/config"
+	"github.com/projet-de-specialite/Commentaires/models"
 )
 
 func Handlers() *gin.Engine {
@@ -16,7 +18,7 @@ func Handlers() *gin.Engine {
 	{
 		v1Commentaires.POST("/newComment", PostComment)
 		v1Commentaires.POST("/newAvis", PostAvis)
-		v1Commentaires.GET("/nombreAvis", GetNombreAvis)
+		v1Commentaires.GET("/nombreAvis/:Id_Commentaire", GetNombreAvis)
 		//v1Commentaires.GET("", GetUsers)
 		//v1Commentaires.GET(":id", GetUser)
 		//v1Commentaires.PUT(":id", EditUser)
@@ -60,7 +62,12 @@ func PostAvis(c *gin.Context) {
 }
 
 func GetNombreAvis(c *gin.Context) {
+	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
 
-	avis := models.CountAvisByComment()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	avis := models.CountAvisByComment(ID)
 	c.IndentedJSON(http.StatusOK, avis)
 }

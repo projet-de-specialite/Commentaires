@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"main/config"
+	"github.com/projet-de-specialite/Commentaires/config"
 )
 
 type Commentaire struct {

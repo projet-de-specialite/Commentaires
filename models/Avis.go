@@ -7,7 +7,7 @@ import (
 
 	"strconv"
 
-	"main/config"
+	"github.com/projet-de-specialite/Commentaires/config"
 )
 
 type Avis struct {
@@ -52,16 +52,16 @@ func NewAvis(a *Avis) {
 
 }
 
-func CountAvisByComment() [2]int {
+func CountAvisByComment(id_comment int) [2]int {
 	var avis [2]int
 
-	row := config.Get_Db().QueryRow("SELECT COUNT(*) FROM avis WHERE Id_Commentaire = 1 AND Valeur = true")
+	row := config.Get_Db().QueryRow("SELECT COUNT(*) FROM avis WHERE Id_Commentaire = $1 AND Valeur = true", id_comment)
 	err := row.Scan(&avis[0])
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	row = config.Get_Db().QueryRow("SELECT COUNT(*) FROM avis WHERE Id_Commentaire = 1 AND Valeur = false")
+	row = config.Get_Db().QueryRow("SELECT COUNT(*) FROM avis WHERE Id_Commentaire = $1 AND Valeur = false", id_comment)
 	err = row.Scan(&avis[1])
 	if err != nil {
 		log.Fatal(err)

@@ -12,8 +12,8 @@ import (
 	"log"
 	"net/http"
 
-	"main/api"
-	"main/config"
+	"github.com/projet-de-specialite/Commentaires/api"
+	"github.com/projet-de-specialite/Commentaires/config"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module main
+module github.com/projet-de-specialite/Commentaires
 
 go 1.20
 
