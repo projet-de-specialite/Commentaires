@@ -1,8 +1,9 @@
 package Test
 
 import (
-	"main/models"
 	"testing"
+
+	"github.com/projet-de-specialite/Commentaires/models"
 )
 
 func TestToStringValide(t *testing.T) {

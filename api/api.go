@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 
-	"main/models"
+	"github.com/projet-de-specialite/Commentaires/models"
 )
 
 func Handlers() *gin.Engine {
