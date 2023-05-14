@@ -71,3 +71,24 @@ func DeleteCommentFromIdComment(id_comment int) {
 		stmt.Exec()
 	}
 }
+
+func PrintCommentByIdPost(id_post string) *[]Commentaire {
+	var comments []Commentaire
+
+	rows, err := config.Get_Db().Query("SELECT * FROM Commentaires WHERE Id_Post=$1", id_post)
+	if err != nil {
+		fmt.Println("This Post Does not exist !")
+	} else {
+		for rows.Next() {
+			var comment Commentaire
+
+			err = rows.Scan(&comment.Id_Commentaire, &comment.Id_User, &comment.Texte, &comment.Date_Commentaire, &comment.Id_Post)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			comments = append(comments, comment)
+		}
+	}
+	return &comments
+}

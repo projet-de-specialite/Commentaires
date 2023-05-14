@@ -19,6 +19,7 @@ func Handlers() *gin.Engine {
 		v1Commentaires.POST("/newComment", PostComment)
 		v1Commentaires.POST("/newAvis", PostAvis)
 		v1Commentaires.GET("/nombreAvis/:Id_Commentaire", GetNombreAvis)
+		v1Commentaires.GET("/printComment/:Id_Post", PrintCommentByPost)
 		v1Commentaires.DELETE("/deleteComment/:Id_Commentaire", DeleteComment)
 		//v1Commentaires.GET("", GetUsers)
 		//v1Commentaires.GET(":id", GetUser)
@@ -85,4 +86,10 @@ func DeleteComment(c *gin.Context) {
 		models.DeleteCommentFromIdComment(ID)
 		c.JSON(201, gin.H{"succes": "Row deleted"})
 	}
+}
+
+func PrintCommentByPost(c *gin.Context) {
+	comments := models.PrintCommentByIdPost(c.Param("Id_Post"))
+	c.IndentedJSON(http.StatusOK, comments)
+
 }
