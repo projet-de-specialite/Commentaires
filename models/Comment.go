@@ -18,7 +18,7 @@ type Commentaire struct {
 	Id_Post          string    `json:"Id_Post"`
 }
 
-func NewComment(c *Commentaire) { //localhost/api/comment/newComment
+func NewComment(c *Commentaire) error { //localhost/api/comment/newComment
 	if c == nil {
 		log.Fatal(c)
 	}
@@ -29,8 +29,10 @@ func NewComment(c *Commentaire) { //localhost/api/comment/newComment
 	_, err := config.Get_Db().Exec(requete)
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
+
+	return err
 }
 
 func FindCommentById(id int) *Commentaire { //non utilisé
@@ -46,7 +48,7 @@ func FindCommentById(id int) *Commentaire { //non utilisé
 	return &commentaire
 }
 
-func DeleteCommentFromIdComment(id_comment int) { //localhost/api/comment/deleteComment/:Id_Commentaire
+func DeleteCommentFromIdComment(id_comment int) error { //localhost/api/comment/deleteComment/:Id_Commentaire
 	var comment Commentaire
 
 	row := config.Get_Db().QueryRow("SELECT Id_Commentaire FROM commentaires WHERE Id_Commentaire = $1", id_comment)
@@ -54,23 +56,26 @@ func DeleteCommentFromIdComment(id_comment int) { //localhost/api/comment/delete
 
 	if err != nil {
 		fmt.Println(err)
-		fmt.Println("This id does not exist !")
 	} else {
 		stmt, err := config.Get_Db().Prepare("DELETE FROM avis WHERE Id_Commentaire = " + strconv.Itoa(id_comment) + ";")
 
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
+
+		} else {
+			stmt.Exec()
+
+			stmt, err = config.Get_Db().Prepare("DELETE FROM commentaires WHERE Id_Commentaire = " + strconv.Itoa(id_comment) + ";")
+
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				stmt.Exec()
+			}
 		}
-		stmt.Exec()
 
-		stmt, err = config.Get_Db().Prepare("DELETE FROM commentaires WHERE Id_Commentaire = " + strconv.Itoa(id_comment) + ";")
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		stmt.Exec()
 	}
+	return err
 }
 
 func PrintCommentByIdPost(id_post string) *[]Commentaire { //localhost/api/comment/printComment/:Id_Post
@@ -85,11 +90,13 @@ func PrintCommentByIdPost(id_post string) *[]Commentaire { //localhost/api/comme
 			var comment Commentaire
 
 			err = rows.Scan(&comment.Id_Commentaire, &comment.Id_User, &comment.Texte, &comment.Date_Commentaire, &comment.Id_Post)
+
 			if err != nil {
-				log.Fatal(err)
+				fmt.Println(err)
+			} else {
+				comments = append(comments, comment)
 			}
 
-			comments = append(comments, comment)
 		}
 	}
 

@@ -31,8 +31,13 @@ func PostComment(c *gin.Context) { // Créer un commentaire
 	c.Bind(&json)
 
 	if json.Texte != "" && json.Id_User != 0 && json.Id_Post != "" {
-		models.NewComment(&json)
-		c.JSON(201, gin.H{"succes": json})
+		err := models.NewComment(&json)
+		if err == nil {
+			c.JSON(201, gin.H{"succes": json})
+		} else {
+			c.JSON(422, gin.H{"errot": err})
+		}
+
 	} else {
 		c.JSON(422, gin.H{"error": "field are empty"})
 	}
@@ -50,8 +55,13 @@ func PostAvis(c *gin.Context) { //Post un avis sur un commentaire via un boolean
 		if void != nil {
 			c.JSON(421, gin.H{"error": "Comment does not exist"})
 		} else {
-			models.NewAvis(&json)
-			c.JSON(201, gin.H{"succes": json})
+			resultat := models.NewAvis(&json)
+			if resultat == "" {
+				c.JSON(201, gin.H{"succes": json})
+			} else {
+				c.JSON(201, gin.H{"Failed": resultat})
+			}
+
 		}
 
 	} else {
@@ -79,8 +89,13 @@ func DeleteComment(c *gin.Context) { //Supprime un commentaire et tous les avis 
 		fmt.Println(err)
 		c.JSON(421, gin.H{"error": "ID incorrect"})
 	} else {
-		models.DeleteCommentFromIdComment(ID)
-		c.JSON(201, gin.H{"succes": "Row deleted"})
+		err := models.DeleteCommentFromIdComment(ID)
+		if err != nil {
+			c.JSON(201, gin.H{"Failed": "This Comment does not exist !"})
+		} else {
+			c.JSON(201, gin.H{"succes": "Row deleted"})
+		}
+
 	}
 }
 

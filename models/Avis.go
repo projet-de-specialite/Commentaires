@@ -16,12 +16,13 @@ type Avis struct {
 	Valeur         bool `json:"Valeur"`
 }
 
-func NewAvis(a *Avis) { // localhost/api/comment/newAvis
+func NewAvis(a *Avis) string { // localhost/api/comment/newAvis
 	if a == nil {
 		log.Fatal(a)
 	}
 
 	var avis Avis
+	var resultat string
 	Commentaire := a.Id_Commentaire
 	User := a.Id_User
 	Valeur := a.Valeur
@@ -41,14 +42,17 @@ func NewAvis(a *Avis) { // localhost/api/comment/newAvis
 		stmt, err := config.Get_Db().Prepare("DELETE FROM avis WHERE Id_Commentaire = " + strconv.Itoa(Commentaire) + " AND Id_User = " + strconv.Itoa(User) + ";")
 
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
+		} else {
+			resultat = "Avis similaire déjà donné, suppréssion de l'avis"
+			stmt.Exec()
 		}
 
-		stmt.Exec()
-
 	} else if avis.Valeur != Valeur {
-		fmt.Println("Avis déjà posté")
+		resultat = "Avis contraire déjà donné"
 	}
+
+	return resultat
 
 }
 
