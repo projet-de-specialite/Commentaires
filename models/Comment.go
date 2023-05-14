@@ -45,3 +45,29 @@ func FindCommentById(id int) *Commentaire {
 
 	return &commentaire
 }
+
+func DeleteCommentFromIdComment(id_comment int) {
+	var comment Commentaire
+
+	row := config.Get_Db().QueryRow("SELECT Id_Commentaire FROM commentaires WHERE Id_Commentaire = $1", id_comment)
+	err := row.Scan(&comment.Id_Commentaire)
+	if err != nil {
+		fmt.Println(err)
+		fmt.Println("This id does not exist !")
+	} else {
+		stmt, err := config.Get_Db().Prepare("DELETE FROM avis WHERE Id_Commentaire = " + strconv.Itoa(id_comment) + ";")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		stmt.Exec()
+
+		stmt, err = config.Get_Db().Prepare("DELETE FROM commentaires WHERE Id_Commentaire = " + strconv.Itoa(id_comment) + ";")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		stmt.Exec()
+	}
+}

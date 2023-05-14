@@ -44,7 +44,7 @@ func NewAvis(a *Avis) {
 			log.Fatal(err)
 		}
 
-		_, err = stmt.Exec()
+		stmt.Exec()
 
 	} else if avis.Valeur != Valeur {
 		fmt.Println("Avis déjà posté")
@@ -68,4 +68,18 @@ func CountAvisByComment(id_comment int) [2]int {
 	}
 
 	return avis
+}
+
+func DeleteAvisFromIdCommentaire(id_comment int) {
+	var avis Avis
+	row := config.Get_Db().QueryRow("SELECT Id_Commentaire FROM avis WHERE Id_Commentaire = $1", id_comment)
+	err := row.Scan(&avis.Id_Commentaire)
+	if err == nil {
+		stmt, err := config.Get_Db().Prepare("DELETE FROM avis WHERE Id_Commentaire = " + strconv.Itoa(id_comment) + ";")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		stmt.Exec()
+	}
 }
