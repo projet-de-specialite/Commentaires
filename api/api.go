@@ -18,6 +18,7 @@ func Handlers() *gin.Engine {
 	{
 		v1Commentaires.POST("/newComment", PostComment)
 		v1Commentaires.POST("/newAvis", PostAvis)
+		v1Commentaires.GET("/findCommentById/:Id_Commentaire", FindCommentById)
 		v1Commentaires.GET("/nombreAvis/:Id_Commentaire", GetNombreAvis)
 		v1Commentaires.GET("/printComment/:Id_Post", PrintCommentByPost)
 		v1Commentaires.DELETE("/deleteComment/:Id_Commentaire", DeleteComment)
@@ -69,6 +70,22 @@ func PostAvis(c *gin.Context) { //Post un avis sur un commentaire via un boolean
 	}
 }
 
+func FindCommentById(c *gin.Context) {
+	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
+
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(421, gin.H{"error": "ID incorrect"})
+	} else {
+		comment := models.FindCommentById(ID)
+		if comment.Id_Commentaire != 0 {
+			c.IndentedJSON(http.StatusOK, comment)
+		} else {
+			c.JSON(201, gin.H{"Failed": "This Comment does not exist !"})
+		}
+
+	}
+}
 func GetNombreAvis(c *gin.Context) { // Donne le nombre pouce rouge/vert du commentaire donner par son ID
 	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
 
