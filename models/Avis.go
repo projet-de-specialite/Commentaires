@@ -16,7 +16,7 @@ type Avis struct {
 	Valeur         bool `json:"Valeur"`
 }
 
-func NewAvis(a *Avis) {
+func NewAvis(a *Avis) { // localhost/api/comment/newAvis
 	if a == nil {
 		log.Fatal(a)
 	}
@@ -52,7 +52,7 @@ func NewAvis(a *Avis) {
 
 }
 
-func CountAvisByComment(id_comment int) [2]int {
+func CountAvisByComment(id_comment int) [2]int { //localhost/api/comment/nombreAvis/:Id_Commentaire
 	var avis [2]int
 
 	row := config.Get_Db().QueryRow("SELECT COUNT(*) FROM avis WHERE Id_Commentaire = $1 AND Valeur = true", id_comment)
@@ -70,7 +70,7 @@ func CountAvisByComment(id_comment int) [2]int {
 	return avis
 }
 
-func DeleteAvisFromIdCommentaire(id_comment int) {
+func DeleteAvisFromIdCommentaire(id_comment int) { // Non utilisé
 	var avis Avis
 	row := config.Get_Db().QueryRow("SELECT Id_Commentaire FROM avis WHERE Id_Commentaire = $1", id_comment)
 	err := row.Scan(&avis.Id_Commentaire)

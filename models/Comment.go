@@ -18,7 +18,7 @@ type Commentaire struct {
 	Id_Post          string    `json:"Id_Post"`
 }
 
-func NewComment(c *Commentaire) {
+func NewComment(c *Commentaire) { //localhost/api/comment/newComment
 	if c == nil {
 		log.Fatal(c)
 	}
@@ -33,11 +33,11 @@ func NewComment(c *Commentaire) {
 	}
 }
 
-func FindCommentById(id int) *Commentaire {
+func FindCommentById(id int) *Commentaire { //non utilisé
 	var commentaire Commentaire
 
 	row := config.Get_Db().QueryRow("SELECT * FROM commentaires WHERE Id_Commentaire = $1;", id)
-	err := row.Scan(&commentaire.Id_Commentaire, &commentaire.Texte, &commentaire.Date_Commentaire, &commentaire.Id_Post)
+	err := row.Scan(&commentaire.Id_Commentaire, &commentaire.Id_User, &commentaire.Texte, &commentaire.Date_Commentaire, &commentaire.Id_Post)
 
 	if err != nil {
 		fmt.Println(err)
@@ -46,11 +46,12 @@ func FindCommentById(id int) *Commentaire {
 	return &commentaire
 }
 
-func DeleteCommentFromIdComment(id_comment int) {
+func DeleteCommentFromIdComment(id_comment int) { //localhost/api/comment/deleteComment/:Id_Commentaire
 	var comment Commentaire
 
 	row := config.Get_Db().QueryRow("SELECT Id_Commentaire FROM commentaires WHERE Id_Commentaire = $1", id_comment)
 	err := row.Scan(&comment.Id_Commentaire)
+
 	if err != nil {
 		fmt.Println(err)
 		fmt.Println("This id does not exist !")
@@ -72,10 +73,11 @@ func DeleteCommentFromIdComment(id_comment int) {
 	}
 }
 
-func PrintCommentByIdPost(id_post string) *[]Commentaire {
+func PrintCommentByIdPost(id_post string) *[]Commentaire { //localhost/api/comment/printComment/:Id_Post
 	var comments []Commentaire
 
 	rows, err := config.Get_Db().Query("SELECT * FROM Commentaires WHERE Id_Post=$1", id_post)
+
 	if err != nil {
 		fmt.Println("This Post Does not exist !")
 	} else {
@@ -90,5 +92,6 @@ func PrintCommentByIdPost(id_post string) *[]Commentaire {
 			comments = append(comments, comment)
 		}
 	}
+
 	return &comments
 }

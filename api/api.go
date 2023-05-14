@@ -21,16 +21,12 @@ func Handlers() *gin.Engine {
 		v1Commentaires.GET("/nombreAvis/:Id_Commentaire", GetNombreAvis)
 		v1Commentaires.GET("/printComment/:Id_Post", PrintCommentByPost)
 		v1Commentaires.DELETE("/deleteComment/:Id_Commentaire", DeleteComment)
-		//v1Commentaires.GET("", GetUsers)
-		//v1Commentaires.GET(":id", GetUser)
-		//v1Commentaires.PUT(":id", EditUser)
-		//v1Commentaires.DELETE(":id", DeleteUser)
 	}
 
 	return r
 }
 
-func PostComment(c *gin.Context) {
+func PostComment(c *gin.Context) { // Créer un commentaire
 	var json models.Commentaire
 	c.Bind(&json)
 
@@ -42,7 +38,7 @@ func PostComment(c *gin.Context) {
 	}
 }
 
-func PostAvis(c *gin.Context) {
+func PostAvis(c *gin.Context) { //Post un avis sur un commentaire via un boolean pouce vert = true, pouce rouge = false
 	var json models.Avis
 	var commentaire models.Commentaire
 	c.Bind(&json)
@@ -63,7 +59,7 @@ func PostAvis(c *gin.Context) {
 	}
 }
 
-func GetNombreAvis(c *gin.Context) {
+func GetNombreAvis(c *gin.Context) { // Donne le nombre pouce rouge/vert du commentaire donner par son ID
 	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
 
 	if err != nil {
@@ -76,7 +72,7 @@ func GetNombreAvis(c *gin.Context) {
 
 }
 
-func DeleteComment(c *gin.Context) {
+func DeleteComment(c *gin.Context) { //Supprime un commentaire et tous les avis le concernant
 	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
 
 	if err != nil {
@@ -88,7 +84,7 @@ func DeleteComment(c *gin.Context) {
 	}
 }
 
-func PrintCommentByPost(c *gin.Context) {
+func PrintCommentByPost(c *gin.Context) { //Affiche tous les commentaires d'un post
 	comments := models.PrintCommentByIdPost(c.Param("Id_Post"))
 	c.IndentedJSON(http.StatusOK, comments)
 
