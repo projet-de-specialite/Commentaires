@@ -11,6 +11,7 @@ mdp  : comentaires
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/projet-de-specialite/Commentaires/api"
 	"github.com/projet-de-specialite/Commentaires/config"
@@ -19,7 +20,7 @@ import (
 func main() {
 	config.DatabaseInit()
 
-	err := http.ListenAndServe(":80", api.Handlers())
+	err := http.ListenAndServe(os.Getenv("COMMENTAIRES_LISTEN"), api.Handlers())
 
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
