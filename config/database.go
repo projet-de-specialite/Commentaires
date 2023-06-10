@@ -20,8 +20,13 @@ var db *sql.DB
 
 func DatabaseInit() {
 	var err error
+	if os.Getenv("COMMENTAIRES_DATABASE_PASSWORD") != "" {
+		db, err = sql.Open("postgres", "host="+os.Getenv("COMMENTAIRES_DATABASE_HOST")+" dbname="+os.Getenv("COMMENTAIRES_DATABASE_NAME")+" user="+os.Getenv("COMMENTAIRES_DATABASE_USER")+" password="+os.Getenv("COMMENTAIRES_DATABASE_PASSWORD")+" sslmode=disable")
 
-	db, err = sql.Open("postgres", "host="+os.Getenv("COMMENTAIRES_DATABASE_HOST")+" user="+os.Getenv("COMMENTAIRES_DATABASE_USER")+" dbname="+os.Getenv("COMMENTAIRES_DATABASE_NAME")+" sslmode=disable")
+	} else {
+		db, err = sql.Open("postgres", "host="+os.Getenv("COMMENTAIRES_DATABASE_HOST")+" dbname="+os.Getenv("COMMENTAIRES_DATABASE_NAME")+" user="+os.Getenv("COMMENTAIRES_DATABASE_USER")+" sslmode=disable")
+
+	}
 
 	if err != nil {
 		log.Fatal(err)

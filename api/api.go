@@ -36,7 +36,7 @@ func PostComment(c *gin.Context) { // Créer un commentaire
 		if err == nil {
 			c.JSON(201, gin.H{"succes": json})
 		} else {
-			c.JSON(422, gin.H{"errot": err})
+			c.JSON(422, gin.H{"error": err})
 		}
 
 	} else {
@@ -70,7 +70,7 @@ func PostAvis(c *gin.Context) { //Post un avis sur un commentaire via un boolean
 	}
 }
 
-func FindCommentById(c *gin.Context) {
+func FindCommentById(c *gin.Context) { // Retourne un commentaire chercher par son ID
 	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
 
 	if err != nil {
@@ -86,6 +86,7 @@ func FindCommentById(c *gin.Context) {
 
 	}
 }
+
 func GetNombreAvis(c *gin.Context) { // Donne le nombre pouce rouge/vert du commentaire donner par son ID
 	ID, err := strconv.Atoi(c.Param("Id_Commentaire"))
 
