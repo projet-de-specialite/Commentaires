@@ -14,6 +14,8 @@ import (
 func Handlers() *gin.Engine {
 	r := gin.Default()
 
+	r.Use(AuthMiddleWare())
+
 	v1Commentaires := r.Group("api/v1/comment")
 	{
 		v1Commentaires.POST("/newComment", PostComment)
@@ -25,6 +27,20 @@ func Handlers() *gin.Engine {
 	}
 
 	return r
+}
+
+func AuthMiddleWare() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authToken := c.GetHeader("Authorization")
+
+		if authToken != "User" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+			c.Abort()
+			return
+		}
+
+		c.Next()
+	}
 }
 
 func PostComment(c *gin.Context) { // Créer un commentaire
