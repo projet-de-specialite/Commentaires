@@ -12,6 +12,7 @@ import (
 )
 
 func Handlers() *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	r.Use(AuthMiddleWare())
